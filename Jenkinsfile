@@ -1,7 +1,7 @@
 pipeline{
     
     environment {
-        registry = "sawrub/sweSurveyJar"
+        registry = "sawrub/studentapisurvey"
         registryCredential = 'dockerhub'
         def dateTag = new Date().format("yyyyMMdd-HHmmss")
 	}
@@ -22,7 +22,7 @@ agent any
         steps{
             script {
                   docker.withRegistry('',registryCredential) {
-                        def image = docker.build('sawrub/sweSurveyJar:'+ dateTag, '. --no-cache')
+                        def image = docker.build('sawrub/studentapisurvey:'+ dateTag, '. --no-cache')
                         docker.withRegistry('',registryCredential) {
                             image.push()
                         }
@@ -33,7 +33,7 @@ agent any
       stage('Deploying to single node in Rancher'){
         steps{
             script {
-                  sh 'kubectl set image deployment/deploy1 container-0=sawrub/sweSurveyJar:'+dateTag
+                  sh 'kubectl set image deployment/deploy1 container-0=sawrub/studentapisurvey:'+dateTag
             }
         }
      }
