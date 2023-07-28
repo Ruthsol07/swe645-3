@@ -10,7 +10,7 @@ agent any
         maven 'Maven 3.8.6'
     }
     stages{
-     stage('Maven clean & Install'){
+     stage('Installing Maven'){
         steps{
             script{
                 sh 'mvn clean'
@@ -18,7 +18,7 @@ agent any
             }
         }
      }
-     stage('Build Docker Image and Push'){
+     stage('Build and Push Docker Image'){
         steps{
             script {
                   docker.withRegistry('',registryCredential) {
@@ -30,7 +30,7 @@ agent any
             }
         }
      }
-      stage('Deploying to single node in Rancher'){
+      stage('Deploying to Nodeport in Rancher '){
         steps{
             script {
                   sh 'kubectl set image deployment/deploy1 container-0=sawrub/studentapisurvey:'+dateTag
